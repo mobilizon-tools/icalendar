@@ -192,6 +192,13 @@ defmodule ICalendar.Util.Deserialize do
   end
 
   def parse_attr(
+        %Property{key: "ATTACH", value: url, params: params},
+        acc
+      ) do
+    %{acc | attach = to_attach(url, params)}
+  end
+
+  def parse_attr(
         %Property{key: "ATTENDEE", params: params, value: value},
         acc
       ) do
@@ -279,6 +286,18 @@ defmodule ICalendar.Util.Deserialize do
     |> Enum.map(fn x -> Float.parse(x) end)
     |> Enum.map(fn {x, _} -> x end)
     |> List.to_tuple()
+  end
+
+  def to_attach(url, %{"FMTTYPE" => type}) do
+    {url, type}
+  end
+
+  def to_attach(url, %{}) do
+    to_attach(url, %{"FMTTYPE" => "image/jpeg"})
+  end
+
+  def to_attach(url) do
+    to_attach(url, %{"FMTTYPE" => "image/jpeg"})
   end
 
   @doc ~S"""

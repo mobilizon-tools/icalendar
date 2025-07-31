@@ -134,6 +134,39 @@ defmodule ICalendarTest do
            """
   end
 
+  test "Icalender.to_ics/1 with attach" do
+    events = [
+      %ICalendar.Event{
+        summary: "Film with Amy and Adam",
+        dtstart: Timex.to_datetime({{2015, 12, 24}, {8, 30, 00}}),
+        dtstamp: Timex.to_datetime({{2015, 12, 24}, {8, 00, 00}}),
+        dtend: Timex.to_datetime({{2015, 12, 24}, {8, 45, 00}}),
+        description: "Let's go see Star Wars, and have fun.",
+        location: "123 Fun Street, Toronto ON, Canada",
+        attach: {"http://example.com/pub/draw.svg", "image/svg"},
+      }
+    ]
+
+    ics = %ICalendar{events: events} |> ICalendar.to_ics()
+
+    assert ics == """
+           BEGIN:VCALENDAR
+           CALSCALE:GREGORIAN
+           VERSION:2.0
+           PRODID:-//Elixir ICalendar//Elixir ICalendar//EN
+           BEGIN:VEVENT
+           ATTACH;FMTTYPE=image/svg:http://example.com/pub/draw.svg
+           DESCRIPTION:Let's go see Star Wars\\, and have fun.
+           DTEND:20151224T084500Z
+           DTSTAMP:20151224T080000Z
+           DTSTART:20151224T083000Z
+           LOCATION:123 Fun Street\\, Toronto ON\\, Canada
+           SUMMARY:Film with Amy and Adam
+           END:VEVENT
+           END:VCALENDAR
+           """
+  end
+
   test "Icalender.to_ics/1 with rrule and exdates" do
     events = [
       %ICalendar.Event{

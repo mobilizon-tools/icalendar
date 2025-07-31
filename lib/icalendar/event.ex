@@ -22,6 +22,7 @@ defmodule ICalendar.Event do
             modified: nil,
             organizer: nil,
             sequence: nil,
+            attach: nil,
             attendees: []
 end
 

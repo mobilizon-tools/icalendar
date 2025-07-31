@@ -226,4 +226,21 @@ defmodule ICalendar.EventTest do
            END:VEVENT
            """
   end
+
+  test "ICalendar.to_ics/1 with attach" do
+    ics =
+      %Event{
+        attach: {"http://example.com/pub/picture.png", "image/png"},
+        dtstamp: Timex.to_datetime({{2015, 12, 24}, {8, 45, 00}})
+      }
+      |> ICalendar.to_ics()
+
+    assert ics == """
+           BEGIN:VEVENT
+           ATTACH;FMTTYPE=image/png:http://example.com/pub/picture.png
+           DTSTAMP:20151224T084500Z
+           END:VEVENT
+           """
+  end
+
 end

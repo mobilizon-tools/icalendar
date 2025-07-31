@@ -119,5 +119,27 @@ defmodule ICalendar.DeserializeTest do
       [event] = ICalendar.from_ics(ics)
       assert event.url == "http://google.com"
     end
+
+    test "with attach" do
+      ics = """
+      BEGIN:VEVENT
+      DESCRIPTION:Escape from the world. Stare at some water.
+      COMMENT:Don't forget to take something to eat !
+      ATTACH;FMTTYPE=image/gif:http://example.com/pub/logo.gif
+      SUMMARY:Going fishing
+      DTEND:20151224T084500Z
+      DTSTART:20151224T083000Z
+      LOCATION:123 Fun Street\\, Toronto ON\\, Canada
+      STATUS:TENTATIVE
+      CATEGORIES:Fishing,Nature
+      CLASS:PRIVATE
+      GEO:43.6978819;-79.3810277
+      END:VEVENT
+      """
+
+      [event] = ICalendar.from_ics(ics)
+      assert event.attach == {"http://example.com/pub/logo.gif", "image/gif"}
+    end
+
   end
 end

@@ -98,6 +98,10 @@ defmodule ICalendar.Util.KV do
     "RRULE:FREQ=#{freq}#{rrule_tail_part}\n"
   end
 
+  def build("ATTACH" = key, {url, type}) do
+    "#{key};FMTTYPE=#{type}:#{url}\n"
+  end
+
   def build("ATTENDEES", attendees) do
     Enum.map(attendees, fn attendee ->
       params =
