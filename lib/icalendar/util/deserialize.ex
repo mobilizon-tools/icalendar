@@ -195,7 +195,7 @@ defmodule ICalendar.Util.Deserialize do
         %Property{key: "ATTACH", value: url, params: params},
         acc
       ) do
-    %{acc | attach = to_attach(url, params)}
+    %{acc | attach: to_attach(url, params)}
   end
 
   def parse_attr(
